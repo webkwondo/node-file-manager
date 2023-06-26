@@ -1,5 +1,4 @@
 import { readdir } from 'fs/promises';
-import { getDirName, join } from '../nwd/path.js';
 import { errorMsg } from '../errors/msg.js';
 
 export const list = async (dirPath) => {
@@ -11,9 +10,24 @@ export const list = async (dirPath) => {
     throw new Error(errorMsg.fail);
   }
 
-  const paths = direntsArr.map((dirent) => {
-    return dirent.name;
-  }).filter((i) => i);
+  const directories = [];
+  const files = [];
 
-  console.log(paths);
+  direntsArr.forEach((dirent) => {
+    const type = dirent.isDirectory() ? 'directory' : 'file';
+    const row = { Name: dirent.name, Type: type };
+
+    if (dirent.isDirectory()) {
+      directories.push(row);
+    } else {
+      files.push(row);
+    }
+  });
+
+  directories.sort((a, b) => a.Name.localeCompare(b.Name));
+  files.sort((a, b) => a.Name.localeCompare(b.Name));
+
+  const dataTable = [...directories, ...files];
+
+  console.table(dataTable);
 };

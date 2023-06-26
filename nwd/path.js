@@ -1,4 +1,4 @@
-import { dirname, join, parse, normalize, isAbsolute } from 'path';
+import { dirname, join, resolve, parse, normalize, isAbsolute } from 'path';
 import { fileURLToPath } from 'url';
 import { stat } from 'fs/promises';
 import { errorMsg } from '../errors/msg.js';
@@ -19,4 +19,4 @@ const checkPath = async (path) => {
   }
 };
 
-export { getDirName, join, dirname, parse, normalize, isAbsolute, checkPath };
+export { getDirName, join, resolve, dirname, parse, normalize, isAbsolute, checkPath };

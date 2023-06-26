@@ -1,7 +1,7 @@
 import readline from 'readline';
 import { homedir, EOL, getOsInfo } from './os/os.js';
 import { stdin, stdout, exit } from 'process';
-import { dirname, join, parse, checkPath } from './nwd/path.js';
+import { dirname, join, resolve, parse, checkPath, isAbsolute } from './nwd/path.js';
 import { errorMsg } from './errors/msg.js';
 import { parseArg, getCommandArg } from './args/parse.js';
 import { list } from './fs/list.js';
@@ -26,15 +26,15 @@ const getMsg = (type = 'pwd', str = pwd) => {
 
   switch (type) {
     case 'pwd':
-      outMsg = pwdMsg + ' ' + str;
+      outMsg = `${pwdMsg} ${str}`;
       break;
     case 'greet':
-      outMsg = (str) ? greetMsg + ', ' + str + '!' :
-                       greetMsg + '!';
+      outMsg = (str) ? `${greetMsg}, ${str}!`:
+                       `${greetMsg}!`;
       break;
     case 'goodbye':
-      outMsg = (str) ? goodbyeMsg + ', ' + str + '!' :
-                       goodbyeMsg + '!';
+      outMsg = (str) ? `${goodbyeMsg}, ${str}, goodbye!` :
+                       `${goodbyeMsg}, goodbye!`;
       break;
     default:
       outMsg = '';
@@ -49,10 +49,7 @@ const displayPwd = () => {
 };
 
 const getAbsolutePath = (pathStr) => {
-  const pathRoot = parse(pathStr).root;
-  const path = (pathRoot === '' || pathRoot === '/' || pathRoot === '\\') ?
-               join(pwd, pathStr) :
-               pathStr;
+  let path = isAbsolute(pathStr) ? pathStr : resolve(pwd, pathStr);
   return path;
 };
 

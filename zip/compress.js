@@ -18,7 +18,7 @@ export const compress = async (sourcePath, destPath) => {
   try {
     await stat(sourcePath);
     await doZip(sourcePath, destPath);
-    await unlink(sourcePath);
+    // await unlink(sourcePath);
   } catch (error) {
     throw new Error(errorMsg.fail);
   }
